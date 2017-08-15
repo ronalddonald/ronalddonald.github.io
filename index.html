@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<!-- Code is a literal copy of http://www.soliantconsulting.com/blog/2013/02/title-generator-using-markov-chains -->
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<meta name="description" content="Some weird shit">
+		<meta name="author" content="">
+
+		<title>aasdf made everything.</title>
+		<!-- stolen CSS from https://getbootstrap.com/docs/3.3/examples/sticky-footer/ -->
+		<style>
+			/* Sticky footer styles
+			-------------------------------------------------- */
+			html {
+				position: relative;
+				min-height: 100%;
+			}
+			body {
+				/* Margin bottom by footer height */
+				margin-bottom: 60px;
+			}
+			.footer {
+				position: absolute;
+				bottom: 0;
+				width: 100%;
+				/* Set the fixed height of the footer here */
+				height: 60px;
+				background-color: #f5f5f5;
+			}
+
+			.container {
+				width: auto;
+				max-width: 680px;
+				padding: 0 15px;
+			}
+
+			.center-block {
+				display: block;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			.container .text-muted {
+				margin: 10px 0;
+			}
+		</style>
+		<!-- stolen CSS from https://getbootstrap.com/docs/3.3/examples/sticky-footer/ -->
+
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+		<script>
+		$(function() {
+			// Code is a literal copy of http://www.soliantconsulting.com/blog/2013/02/title-generator-using-markov-chains
+			var actualQuotes = [
+				"LOL",
+				"thx 4 the laught faggots",
+				"im flattered",
+				"stop repeating the same line over and over like a parrot",
+				"best 2013 quote",
+				"DupeX:",
+				"CSEAX Vac:",
+				"Force Flying Map:",
+				"funny considering you sucking dick on moopler for pserver hack",
+				"hahaha",
+				"lol GOTCHA BITCH u thought it would piss me off u reposting my gem",
+				"good because this trash was op!",
+				"just hope no1 saved the script made a mmistake posting it lmfao!",
+				"John you didnt save the script?",
+				"wtf is an aasdf?",
+				"i did not know",
+				"why am i",
+				"nigga y are you replying to every comment i do",
+				"@TimoMS	scroll up",
+				"you could ask someone to build the source code to make it work for windows 7",
+				"im lazy",
+				"to make code that detect os",
+				"(actually i did make one that i gave to airride in his ranarion source but cbf to implement it)",
+				"in MapleStory.cpp:",
+				"you download the rar to edit source code to make it work for windows 7 because syscall are different depedning on the other OS",
+				"you can use this table to do the appropriate change",
+				"and put it in maplestory folder",
+				"dll if you want to use (windows 10)",
+				"rar if you want to browse my source code",
+				"yes it works",
+				"or edit the source code for other os",
+				"i was tricking you you dont have it bitch",
+			];
+
+
+			// Code is a literal copy of http://www.soliantconsulting.com/blog/2013/02/title-generator-using-markov-chains
+			var startingWords = [];
+			var endingWords = {};
+			var wordMap = {};
+			var minLength = 2;
+			var variableLength = 7;
+
+			// Code is a literal copy of http://www.soliantconsulting.com/blog/2013/02/title-generator-using-markov-chains
+			for (var i = 0; i < actualQuotes.length; i++) { 
+				var split = actualQuotes[i].replace(/\(/g , "").replace(/\)/g , "").replace(/\:/g , "").split(' ');
+				startingWords.push(split[0]);
+				endingWords[split[split.length-1]] = true;
+				for (var j = 0; j < split.length-1; j++) {
+					var word = split[j];
+				
+				// Create array if is doesn't exist.
+					wordMap[word] = wordMap[word] || [];
+				
+				// Add link to next word
+				wordMap[word].push(split[j+1]);
+				}
+			}
+
+			// Code is a literal copy of http://www.soliantconsulting.com/blog/2013/02/title-generator-using-markov-chains
+			function getRandFrom(arr){
+				return arr[Math.floor(arr.length * Math.random())]
+			}
+
+			// Code is a literal copy of http://www.soliantconsulting.com/blog/2013/02/title-generator-using-markov-chains
+			var generateThought = function (wordsCount) {
+				word = getRandFrom(startingWords);
+				var output = [word];
+				while (wordMap.hasOwnProperty(word)) {
+					var next_words = wordMap[word];
+					word = getRandFrom(next_words);
+					output.push(word);
+					if (output.length > wordsCount && endingWords.hasOwnProperty(word)) break;
+				}
+				if (output.length < wordsCount) return generateThought(wordsCount);
+				return output.join(' ');
+			};
+
+			function genNew(){
+				var thought = generateThought(minLength + Math.floor(variableLength * Math.random()));
+				$('#output').html(thought);
+			}
+
+			// Code is a literal copy of http://www.soliantconsulting.com/blog/2013/02/title-generator-using-markov-chains
+			$('#generate').on('click', genNew);
+			genNew();
+		});
+		</script>
+	</head>
+	<body>
+		<div class="container-fluid">
+			<div class="page-header">
+				<h1 class="text-center">aasdf made literally everything.</h1>
+			</div>
+
+			<div class="row">
+				<div class="col-md-4"></div>
+				<div class="col-md-4 text-center">
+					<button type="button" class="btn btn-primary text-center" id="generate">Generate new aasdf thought</button>
+				</div>
+				<div class="col-md-4"></div>
+			</div>
+			<div class="row">
+				<div class="col-md-4"></div>
+				<div class="col-md-4"><p> </p></div>
+				<div class="col-md-4"></div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-4"></div>
+				<div class="col-md-4">
+					<p id="output" class="text-center lead"></p>
+				</div>
+				<div class="col-md-4"></div>
+			</div>
+		</div>
+
+						
+
+		<footer class="footer">
+			<div class="container">
+				<p class="text-muted text-center">Markov chain code stolen from <a href="http://www.soliantconsulting.com/blog/2013/02/title-generator-using-markov-chains"> this.</a> HTML and CSS stolen from <a href="https://getbootstrap.com/docs/3.3/examples/sticky-footer/"> this. </a></p>
+			</div>
+		</footer>
+
+	</body>
+</html>
